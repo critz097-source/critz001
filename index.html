@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRITZ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+:root{
+  --red: #e10600;
+  --black: #0a0a0a;
+  --white: #ffffff;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Anton', 'Arial Black', Arial, sans-serif}
+body,html{height:100%;overflow-x:hidden; font-weight:400;}
+
+.hero{position:relative;height:100vh;width:100%;overflow:hidden;color:var(--white)}
+.bg-video{
+  position:absolute;top:50%;left:50%;min-width:100%;min-height:100%;
+  width:auto;height:auto;transform:translate(-50%,-50%);z-index:-2;object-fit:cover
+}
+.hero::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;z-index:-1;
+  background:linear-gradient(180deg, rgba(225,6,0,0.2) 0%, rgba(10,10,10,0.5) 100%);
+}
+
+/* GLASSY HEADER */
+header{
+  position:absolute;top:0;width:100%;padding:18px 25px;
+  display:flex;justify-content:space-between;align-items:center;z-index:2;
+  background: rgba(10, 10, 10, 0.2);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom:1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+/* GLASSY LOGO WRAP */
+.logo-wrap{
+  display:flex; flex-direction:column; align-items:flex-start; gap:3px;
+  padding:8px 14px;
+  background: rgba(225, 6, 0, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.logo{
+  font-size:24px; 
+  font-weight:400; 
+  letter-spacing:4px; 
+  color:var(--white);
+  text-shadow:0 0 15px rgba(225,6,0,0.8);
+}
+.location{
+  font-size:9px; 
+  letter-spacing:2.5px; 
+  color:var(--white); 
+  opacity:0.9;
+  font-weight:400;
+  text-transform:uppercase;
+}
+.location span{ color: var(--red); }
+
+/* GLASSY NAV RIGHT */
+.nav-right{
+  display:flex;align-items:center;gap:12px;
+  padding:8px 16px;
+  background: rgba(10, 10, 10, 0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.nav-right a{
+  color:var(--white);text-decoration:none;transition:0.3s;
+  font-size:12px; 
+  font-weight:400; 
+  letter-spacing:1.5px;
+  padding:6px 10px;
+  border-radius: 16px;
+}
+.nav-right a:hover{
+  color:var(--red); 
+  background: rgba(225,6,0,0.15);
+  text-shadow:0 0 10px rgba(225,6,0,0.8)
+}
+
+.center-content{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:30px; text-align:center; padding:0 20px; width:100%;
+}
+
+/* CURVY GLASSY BUTTON */
+.center-btn a{
+  background: rgba(225, 6, 0, 0.15);
+  color:var(--white);
+  padding:18px 55px;
+  border-radius: 50px;
+  text-decoration:none;
+  font-weight:400;
+  letter-spacing:5px;
+  font-size:15px;
+  border: 1px solid rgba(255,255,255,0.25);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 8px 32px rgba(225,6,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.2);
+  transition: all 0.4s ease;
+  animation: glassPulse 3s infinite;
+  display:inline-block;
+  text-transform:uppercase;
+}
+.center-btn a:hover{
+  background: rgba(255, 255, 255, 0.2);
+  color:var(--red);
+  border: 1px solid rgba(225,6,0,0.5);
+  box-shadow: 
+    0 8px 40px rgba(225,6,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.4);
+  transform: translateY(-3px);
+}
+
+/* GLASSY SOCIALS BOX */
+.socials{
+  position:absolute;bottom:30px;left:50%;transform:translateX(-50%);
+  background: rgba(10, 10, 10, 0.25);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  padding:14px 40px;
+  border-radius:50px;
+  z-index:2;
+  display:flex;gap:30px;
+  align-items:center;justify-content:center;
+  border:1px solid rgba(255,255,255,0.2);
+  opacity: 1;
+  box-shadow: 
+    0 8px 32px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.socials a{
+  color:var(--white);text-decoration:none;
+  transition: all 0.3s ease; display:flex;align-items:center;justify-content:center;
+}
+.socials a svg{
+  width: 26px; height: 26px; fill: white; transition: 0.3s;
+}
+.snap-s{
+  width: 26px; height: 26px; 
+  display:flex; align-items:center; justify-content:center;
+  font-size: 22px; font-weight:400; letter-spacing:0;
+  color:var(--white);
+  transition: 0.3s;
+}
+.socials a:hover svg, .socials a:hover .snap-s{
+  fill:var(--red); 
+  color:var(--red);
+  transform:translateY(-4px) scale(1.2);
+  filter:drop-shadow(0 0 12px rgba(225,6,0,0.8))
+}
+
+@keyframes glassPulse{
+ 0%,100%{ box-shadow: 0 8px 32px rgba(225,6,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2) }
+ 50%{ box-shadow: 0 8px 40px rgba(225,6,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3) }
+}
+@keyframes fadeInDown{ from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes expandLine{to{width:100%}}
+
+@media(min-width: 768px){
+  header{ padding: 22px 50px; }
+  .logo{ font-size: 32px; letter-spacing: 6px; }
+  .location{ font-size: 11px; letter-spacing: 3.5px; }
+  .nav-right{ gap: 16px; }
+  .nav-right a{ font-size: 13px; padding: 8px 14px; }
+  .center-btn a{ padding: 20px 70px; font-size: 18px; letter-spacing: 6px; border-radius: 60px; }
+  .socials{ padding: 16px 50px; gap: 35px; border-radius: 60px; }
+  .socials a svg, .snap-s{ width: 30px; height: 30px; font-size: 26px; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <video autoplay muted loop playsinline class="bg-video">
+    <source src="swag.mp4" type="video/mp4">
+  </video>
+
+  <header>
+    <div class="logo-wrap">
+      <div class="logo">CRITZ</div>
+      <div class="location">LAGOS NIGERIA - <span>SHIPPING WORLDWIDE</span></div>
+    </div>
+
+    <div class="nav-right">
+      <a href="products.html">PRODUCTS</a>
+      <a href="cart.html">CART</a>
+      <a href="orders.html">ORDERS</a>
+    </div>
+  </header>
+
+  <div class="center-content">
+    <div class="center-btn">
+      <a href="products.html">SHOP NOW</a>
+    </div>
+  </div>
+
+  <div class="socials">
+    <a href="https://tiktok.com" target="_blank" title="TikTok">
+      <svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+    </a>
+    
+    <a href="https://instagram.com" target="_blank" title="Instagram">
+      <svg viewBox="0 0 24 24"><path d="M7 2C4.243 2 2 4.243 2 7v10c0 2.757 2.243 5 5 5h10c2.757 0 5-2.243 5-5V7c0-2.757-2.243-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 2a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6zm4.5-2a1 1 0 100 2 1 1 0 000-2z"/></svg>
+    </a>
+
+    <a href="https://snapchat.com" target="_blank" title="Snapchat">
+      <div class="snap-s">S</div>
+    </a>
+    
+    <a href="https://wa.me/2348012345678" target="_blank" title="WhatsApp">
+      <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.198-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.271.296-1.043 1.02-1.043 2.488 0 1.468 1.068 2.884 1.217 3.083.149.198 2.1 3.206 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+    </a>
+  </div>
+</section>
+
+</body>
+</html>
