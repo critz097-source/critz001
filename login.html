@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LOGIN - STYLEVAULT</title>
+<style>
+:root{--red:#e10600;--black:#0a0a0a;--white:#fff;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Arial Black', Arial, sans-serif}
+body{background:var(--black);color:var(--white);display:flex;justify-content:center;align-items:center;height:100vh}
+
+.login-box{background:#111;padding:50px;border-radius:20px;border:1px solid rgba(225,6,0,0.3);width:400px;max-width:90%}
+h1{text-align:center;font-size:30px;letter-spacing:3px;margin-bottom:30px}
+h1 span{color:var(--red)}
+.tabs{display:flex;margin-bottom:30px;border-bottom:1px solid #333}
+.tab{flex:1;padding:15px;text-align:center;cursor:pointer;opacity:0.5}
+.tab.active{opacity:1;border-bottom:2px solid var(--red)}
+
+input{width:100%;padding:15px;margin-bottom:15px;background:#222;border:1px solid #333;border-radius:8px;color:var(--white);font-size:14px}
+input:focus{outline:none;border-color:var(--red)}
+.btn{width:100%;background:var(--red);color:var(--white);padding:15px;border:none;border-radius:8px;font-weight:900;letter-spacing:2px;cursor:pointer;margin-top:10px}
+.btn:hover{background:var(--white);color:var(--red)}
+.back{position:absolute;top:30px;left:50px;color:var(--white);text-decoration:none}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<a href="index.html" class="back">← BACK</a>
+
+<div class="login-box">
+  <h1>STYLE<span>VAULT</span></h1>
+  
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('login')">LOGIN</div>
+    <div class="tab" onclick="showTab('signup')">SIGN UP</div>
+  </div>
+
+  <!-- LOGIN FORM -->
+  <form id="login" onsubmit="loginUser(event)">
+    <input type="email" id="loginEmail" placeholder="EMAIL" required>
+    <input type="password" id="loginPass" placeholder="PASSWORD" required>
+    <button class="btn">LOGIN</button>
+  </form>
+
+  <!-- SIGNUP FORM -->
+  <form id="signup" class="hidden" onsubmit="signupUser(event)">
+    <input type="text" id="signupName" placeholder="FULL NAME" required>
+    <input type="email" id="signupEmail" placeholder="EMAIL" required>
+    <input type="password" id="signupPass" placeholder="PASSWORD" required>
+    <button class="btn">CREATE ACCOUNT</button>
+  </form>
+</div>
+
+<script>
+// TAB SWITCH
+function showTab(tab){
+  document.getElementById('login').classList.add('hidden');
+  document.getElementById('signup').classList.add('hidden');
+  document.getElementById(tab).classList.remove('hidden');
+  
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// FAKE SIGNUP - SAVES TO BROWSER
+function signupUser(e){
+  e.preventDefault();
+  let users = JSON.parse(localStorage.getItem('stylevaultUsers')) || [];
+  let newUser = {
+    name: document.getElementById('signupName').value,
+    email: document.getElementById('signupEmail').value,
+    pass: document.getElementById('signupPass').value
+  };
+  
+  if(users.find(u => u.email === newUser.email)){
+    alert('Email already exists!');
+    return;
+  }
+  
+  users.push(newUser);
+  localStorage.setItem('stylevaultUsers', JSON.stringify(users));
+  localStorage.setItem('stylevaultCurrentUser', JSON.stringify(newUser));
+  alert('Account created! Welcome ' + newUser.name);
+  window.location.href = 'index.html';
+}
+
+// FAKE LOGIN
+function loginUser(e){
+  e.preventDefault();
+  let users = JSON.parse(localStorage.getItem('stylevaultUsers')) || [];
+  let email = document.getElementById('loginEmail').value;
+  let pass = document.getElementById('loginPass').value;
+  
+  let user = users.find(u => u.email === email && u.pass === pass);
+  if(user){
+    localStorage.setItem('stylevaultCurrentUser', JSON.stringify(user));
+    alert('Welcome back ' + user.name);
+    window.location.href = 'index.html';
+  } else {
+    alert('Wrong email or password!');
+  }
+}
+</script>
+</body>
+</html>

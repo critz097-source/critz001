@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CART - CRITZ</title>
+<style>
+:root{--red:#e10600;--black:#0a0a0a;--white:#fff;}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif}
+body{background:var(--black);color:var(--white)}
+header{padding:30px 50px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(225,6,0,0.3)}
+.logo{font-size:24px;font-weight:900;letter-spacing:2px}.logo span{color:var(--red)}
+.nav-right{display:flex;gap:25px;align-items:center}
+.nav-right a{color:var(--white);text-decoration:none;font-size:12px;letter-spacing:1px;font-weight:700}
+.nav-right a:hover{color:var(--red)}
+.container{max-width:900px;margin:80px auto;padding:20px}
+h1{text-align:center;font-size:50px;letter-spacing:5px;margin-bottom:50px}
+.cart-item{display:flex;align-items:center;gap:20px;background:#111;padding:20px;border-radius:10px;margin-bottom:15px;border:1px solid #222}
+.cart-item img{width:100px;height:100px;object-fit:cover;background:#fff;border-radius:5px}
+.qty-btn{background:var(--red);color:var(--white);border:none;width:30px;height:30px;cursor:pointer;border-radius:5px;font-weight:900}
+.remove-btn{background:none;border:1px solid var(--red);color:var(--red);padding:8px 15px;cursor:pointer;border-radius:5px;font-weight:700}
+.total{text-align:right;font-size:24px;margin-top:30px;font-weight:900}
+.btn-group{display:flex;justify-content:center;margin-top:30px}
+.checkout-btn{display:block;width:100%;max-width:400px;background:#25D366;color:var(--white);padding:18px;text-align:center;text-decoration:none;font-weight:900;letter-spacing:2px;border-radius:10px;border:none;cursor:pointer;font-size:14px}
+.checkout-btn:hover{opacity:0.8;transform:scale(1.02)}
+.empty{text-align:center;color:#777;padding:60px 0;font-size:20px}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">CRITZ</div>
+  <div class="nav-right">
+    <a href="products.html">SHOP</a>
+    <a href="cart.html">CART</a>
+    <a href="orders.html">ORDERS</a>
+  </div>
+</header>
+
+<div class="container">
+  <h1>YOUR CART</h1>
+  <div id="cart-items"></div>
+  <div id="cart-total" class="total"></div>
+
+  <div class="btn-group" id="btn-group">
+    <a id="whatsapp-btn" href="#" target="_blank" class="checkout-btn">CHECKOUT ON WHATSAPP</a>
+  </div>
+</div>
+
+<!-- MAIN JS -->
+<script>
+// 1. CART LOGIC
+let cart = JSON.parse(localStorage.getItem('stylevaultCart')) || [];
+
+function renderCart(){
+  if(cart.length === 0){
+    document.getElementById('cart-items').innerHTML = '<div class="empty">YOUR CART IS EMPTY</div>';
+    document.getElementById('cart-total').innerHTML = '';
+    document.getElementById('btn-group').style.display = 'none';
+    return;
+  }
+
+  let html = ''; let total = 0;
+  let whatsappMsg = `Hello CRITZ!%0A`;
+  whatsappMsg += `ORDER:%0A`;
+
+  cart.forEach((item, i) => {
+    total += item.price * item.qty;
+    whatsappMsg += `- ${item.name} x${item.qty} ₦${(item.price*item.qty).toLocaleString()}%0A`;
+    html += `<div class="cart-item">
+      <img src="${item.img}">
+      <div style="flex:1"><h3>${item.name}</h3><div style="color:var(--red);font-weight:900">₦${item.price.toLocaleString()}</div></div>
+      <div><button class="qty-btn" onclick="updateQty(${i},-1)">-</button> <span style="padding:0 10px">${item.qty}</span> <button class="qty-btn" onclick="updateQty(${i},1)">+</button></div>
+      <button class="remove-btn" onclick="removeItem(${i})">REMOVE</button>
+    </div>`;
+  });
+
+  whatsappMsg += `%0ATotal: ₦${total.toLocaleString()}`;
+  document.getElementById('cart-items').innerHTML = html;
+  document.getElementById('cart-total').innerHTML = `TOTAL: ₦${total.toLocaleString()}`;
+
+  let whatsappBtn = document.getElementById('whatsapp-btn');
+  whatsappBtn.href = `https://wa.me/2348012345678?text=${whatsappMsg}`;
+
+  whatsappBtn.onclick = () => {
+    localStorage.removeItem('stylevaultCart');
+  }
+}
+
+function updateQty(i, change){
+  cart[i].qty += change;
+  if(cart[i].qty <= 0) cart.splice(i,1);
+  localStorage.setItem('stylevaultCart',JSON.stringify(cart));
+  renderCart();
+}
+
+function removeItem(i){
+  cart.splice(i,1);
+  localStorage.setItem('stylevaultCart',JSON.stringify(cart));
+  renderCart();
+}
+
+renderCart();
+</script>
+
+</body>
+</html>
